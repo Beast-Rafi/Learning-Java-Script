@@ -1,21 +1,51 @@
-let firstCard = 2
-let secondCard = 11
+let player = {
+    name: "Fahim Shakil",
+    chip: 145
+}
+
 let hasBlackJack = false
-let cards = [firstCard , secondCard]
-let isAlive = true
+let cards = []
+let isAlive = false
 let message
-let sum = firstCard + secondCard
+let sum = 0
+// -----------------------Getting Items From Dom--------------------------//
 let msgEl = document.getElementById("msg-El")
 let sumEl = document.getElementById("sum-El")
 let cardsEl = document.getElementById("cards-El")
+let playerEl = document.getElementById("player-El")
+
+
+playerEl.innerText = player.name + ": $" + player.chip
 
 function startGame() {
+    isAlive = true
+    let firstCard = getRandomCard()
+    let secondCard = getRandomCard()
+    cards.push(firstCard, secondCard)
+    sum = firstCard + secondCard
+
+
     renderGame()
 }
 
+function getRandomCard() {
+    let randomNumber = Math.floor( Math.random() * 13 ) + 1
+    if (randomNumber === 1) {
+        return 11
+    } else if (randomNumber > 11) {
+        return 10
+    } else {
+        return randomNumber
+    }
+         
+}
+
 function renderGame() {
-    sumEl.textContent += sum
-    cardsEl.textContent += " " + cards[0] + " " + cards[1]
+    sumEl.textContent ="Sum: " + sum
+    cardsEl.textContent = "Cards: " 
+    for (i = 0; i < cards.length; i ++) {
+        cardsEl.textContent += cards[i] + " "
+    }
 
     if (sum <= 20) {
         message = "Do you want to roll a new card?"
@@ -32,9 +62,10 @@ function renderGame() {
 }
 
 function newCard() {
-    let thirdCard = 4
-    cards.push(thirdCard)
-    sum = sum + thirdCard + " "
-    cardsEl.textContent += sum
-    renderGame()
+    let thirdCard = getRandomCard()
+    if (isAlive === true && hasBlackJack === false) {
+        cards.push(thirdCard)
+        sum += thirdCard
+        renderGame()
+    }
 }
